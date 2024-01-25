@@ -58,26 +58,3 @@ $pass = "admin"; // Remplacez par votre mot de passe
     }
 
 ?>
-
-
-<form method="POST">
-    <h1>Ajout Centre</h1>
-    <input type="text" name="nomCentre">
-    <input type="text" name="adresse">
-    <input type="text" name="nomCentre">
-    <input type="submit" name="submitCentre">
-
-</form>
-
-<?php 
-    if (isset($_POST['submitRole'])){
-        $nomRole = $_POST['nomRole'];
-
-        $sql = "INSERT INTO `role`(`nom_role`) VALUES ('$nomRole')";
-        $bdd->query($sql);
-
-        echo "data ajoutée dans la bdd";
-
-    }
-
-?>
