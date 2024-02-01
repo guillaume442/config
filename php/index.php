@@ -65,7 +65,6 @@
 </table>
 
 
-
 <?php
 
 $host = "mysql"; // Remplacez par l'hôte de votre base de données
