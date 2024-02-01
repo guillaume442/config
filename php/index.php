@@ -42,12 +42,18 @@
                 ['id' => 6, 'nom' => 'Exemple'],
             ];
 
+
             foreach ($roles as $role) {
                 echo "<tr>";
                 echo "<td>{$role['id']}</td>";
                 echo "<td>{$role['nom']}</td>";
                 echo "<td><button class='btn-modify'>Modifier</button></td>";
                 echo "<td><button class='btn-delete'>Supprimer</button></td>";
+                echo "<form action='traitement_role.php' method='post'>";
+                echo "<input type='hidden' name='role_id' value='" . htmlspecialchars($role['id_role']) . "'>";
+                echo "<input type='text' name='nom_role' value='" . htmlspecialchars($role['nom_role']) . "'>";
+                echo "<input type='submit' name='action' value='Modifier'>";
+                echo "</form>";
                 echo "</tr>";
             }
         ?>
