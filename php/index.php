@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AFCI - Gestion des centres</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -19,8 +20,54 @@
         </nav>
     </header>
 
+    <table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom Rôle</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Exemple de données de rôle (à remplacer par des données dynamiques PHP si nécessaire) -->
+        <tr>
+            <td>1</td>
+            <td>Directeur</td>
+            <td><button class="btn-delete">Supprimer</button></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Coordinateur</td>
+            <td><button class="btn-delete">Supprimer</button></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Formateur</td>
+            <td><button class="btn-delete">Supprimer</button></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Apprenant</td>
+            <td><button class="btn-delete">Supprimer</button></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Inactif</td>
+            <td><button class="btn-delete">Supprimer</button></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Exemple</td>
+            <td><button class="btn-delete">Supprimer</button></td>
+        </tr>
+        <!-- Répétez les lignes ci-dessus pour chaque rôle que vous souhaitez afficher -->
+    </tbody>
+</table>
+
+
 
 <?php
+
 $host = "mysql"; // Remplacez par l'hôte de votre base de données
 $port = "3306";
 $dbname = "afci"; // Remplacez par le nom de votre base de données
