@@ -25,44 +25,40 @@
         <tr>
             <th>ID</th>
             <th>Nom Rôle</th>
+            <th>Modifier</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        <!-- Exemple de données de rôle (à remplacer par des données dynamiques PHP si nécessaire) -->
-        <tr>
-            <td>1</td>
-            <td>Directeur</td>
-            <td><button class="btn-delete">Supprimer</button></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Coordinateur</td>
-            <td><button class="btn-delete">Supprimer</button></td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Formateur</td>
-            <td><button class="btn-delete">Supprimer</button></td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Apprenant</td>
-            <td><button class="btn-delete">Supprimer</button></td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>Inactif</td>
-            <td><button class="btn-delete">Supprimer</button></td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td>Exemple</td>
-            <td><button class="btn-delete">Supprimer</button></td>
-        </tr>
-        <!-- Répétez les lignes ci-dessus pour chaque rôle que vous souhaitez afficher -->
+        <?php
+            // Ici, vous devriez récupérer les données de la base de données avec PHP
+            // J'utilise une boucle foreach statique en guise d'exemple
+            $roles = [
+                ['id' => 1, 'nom' => 'Directeur'],
+                ['id' => 2, 'nom' => 'Coordinateur'],
+                ['id' => 3, 'nom' => 'Formateur'],
+                ['id' => 4, 'nom' => 'Apprenant'],
+                ['id' => 5, 'nom' => 'Inactif'],
+                ['id' => 6, 'nom' => 'Exemple'],
+            ];
+
+            foreach ($roles as $role) {
+                echo "<tr>";
+                echo "<td>{$role['id']}</td>";
+                echo "<td>{$role['nom']}</td>";
+                echo "<td><button class='btn-modify'>Modifier</button></td>";
+                echo "<td><button class='btn-delete'>Supprimer</button></td>";
+                echo "</tr>";
+            }
+        ?>
     </tbody>
 </table>
+
+<!-- Formulaire pour ajouter un nouveau rôle -->
+<form method="POST">
+    <input type="text" name="nomRole" placeholder="Ajouter un rôle">
+    <input type="submit" name="submitRole" value="Ajouter">
+</form>
 
 
 <?php

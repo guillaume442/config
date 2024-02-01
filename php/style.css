@@ -1,21 +1,121 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+}
+
+header {
+    background-color: #000;
+    padding: 10px 0; /* Ajout de padding vertical pour augmenter la taille du header */
+    text-decoration: none;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color: white; /* Couleur blanche pour tous les états des liens */
+    text-decoration: none; /* Aucun soulignement pour tous les états des liens */
+}
+
+/* Style spécifique des liens dans le header */
+header nav ul li a:link, 
+header nav ul li a:visited, 
+header nav ul li a:hover, 
+header nav ul li a:active {
+    color: white; /* Couleur blanche pour tous les états des liens dans le header */
+    text-decoration: none; /* Aucun soulignement pour tous les états des liens dans le header */
+}
+
+header nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    text-decoration: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+header nav ul li a {
+    color: white; /* Couleur du texte pour les liens non visités */
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+header nav ul li a:visited {
+    color: white; /* Couleur du texte pour les liens déjà visités */
+}
+
 table {
-    width: 100%;
     border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    background: #fff;
 }
 
 th, td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 10px;
+    text-align: center;
 }
 
 th {
     background-color: #f2f2f2;
 }
 
-.btn-delete {
-    background-color: red;
-    color: white;
-    border: none;
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.btn-modify, .btn-delete {
     padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    width: auto; /* Réinitialiser la largeur à la valeur par défaut */
+    margin: auto;
+}
+
+.btn-modify {
+    background-color: #ffca28; /* Yellow */
+    color: #fff;
+}
+
+.btn-delete {
+    background-color: #f44336; /* Red */
+    color: #fff;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+form input[type="text"], form input[type="submit"] {
+    padding: 10px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+form input[type="submit"] {
+    background-color: #5cb85c; /* Green */
+    color: white; /* Texte blanc pour le bouton */
     cursor: pointer;
 }
+
+form input[type="submit"]:hover {
+    background-color: #4cae4c; /* Darker green */
+}
+
+.confirmation-message {
+    text-align: center;
+    color: green;
+    font-weight: bold;
+}
+
+
+
