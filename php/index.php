@@ -268,7 +268,6 @@ if (isset($_GET["page"]) && $_GET["page"] == "centre"){
            <label for="">Code postal</label>
            <input type="text" name="cpCentre">
            <input type="submit" name="submitCentre" value="enregistrer">
-       
        </form>
        
    <?php
@@ -385,7 +384,6 @@ $sql = "SELECT * FROM pedagogie";
             <input type="submit" name="submitSession" value="Enregistrer">
         </form>
 
-       
    <?php
    }
 
@@ -398,9 +396,9 @@ $sql = "SELECT * FROM pedagogie";
             <input type="submit" name="submitApprenant" value="Enregistrer">
         </form>
 
-       
-   <?php
-   }
+        
+        <?php
+    }
 
 ?>
 
