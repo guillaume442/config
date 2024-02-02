@@ -1,3 +1,60 @@
+<?php
+
+// Configuration de la connexion à la base de données
+$host = "mysql"; // Votre hôte de base de données
+$port = "3306";
+$dbname = "afci"; // Le nom de votre base de données
+$user = "admin"; // Votre nom d'utilisateur
+$pass = "admin"; // Votre mot de passe
+
+try {
+    $bdd = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8", $user, $pass);
+    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
+
+// Traitement du formulaire de soumission d'une nouvelle formation
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitFormation'])) {
+    $nomFormation = $_POST['nomFormation'];
+    // Assurez-vous que le nom de la table correspond à celui dans votre base de données
+    $sql = "INSERT INTO formations (nom_formation) VALUES (:nomFormation)";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([':nomFormation' => $nomFormation]);
+    
+    // Rediriger ou afficher un message de succès
+    echo "Formation ajoutée avec succès.";
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitSession'])) {
+    $nomSession = $_POST['nomSession']; // Assurez-vous que ce champ est présent dans votre formulaire
+    // Mettez à jour la requête pour inclure la nouvelle colonne
+    $sql = "INSERT INTO session (nom_session, date_debut, id_pedagogie, id_formation) VALUES (:nomSession, :dateDebut, :idPedagogie, :idFormation)";
+    $stmt = $bdd->prepare($sql);
+    // Remplacez les valeurs ci-dessous par celles que vous récupérez de votre formulaire ou d'autres sources
+    $stmt->execute([
+        ':nomSession' => $nomSession,
+        ':dateDebut' => '2023-01-01', // Exemple de date, ajustez selon vos besoins
+        ':idPedagogie' => 1, // Exemple d'ID, ajustez selon vos besoins
+        ':idFormation' => 1 // Exemple d'ID, ajustez selon vos besoins
+    ]);
+    
+    echo "Session ajoutée avec succès.";
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitApprenant'])) {
+    $nomApprenant = $_POST['nomApprenant'];
+    // Utilisez le nom correct de la table et de la colonne selon votre base de données
+    $sql = "INSERT INTO apprenants (nom_apprenant) VALUES (:nomApprenant)";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([':nomApprenant' => $nomApprenant]);
+    
+    echo "Apprenant ajouté avec succès.";
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +87,10 @@
         </tr>
     </thead>
     <tbody>
+        
         <?php
+
+        
             // Ici, vous devriez récupérer les données de la base de données avec PHP
             // J'utilise une boucle foreach statique en guise d'exemple
             $roles = [
@@ -55,6 +115,8 @@
         ?>
     </tbody>
 </table>
+
+
 
 <!-- Formulaire pour ajouter un nouveau rôle -->
 <form method="POST">
@@ -190,12 +252,11 @@ if (isset($_GET["page"]) && $_GET["page"] == "centre"){
 // gestion de la page Formation
    if (isset($_GET["page"]) && $_GET["page"] == "formation"){
     ?>
-       <form method="POST">
-       <h1>Ajout d'une formation</h1>
-           <input type="text" name="nomRole">
-           <input type="submit" name="submitRole" value="enregistrer">
-       
-       </form>
+        <form method="POST">
+            <h1>Ajout d'une formation</h1>
+            <input type="text" name="nomFormation">
+            <input type="submit" name="submitFormation" value="enregistrer">
+        </form>
        
    <?php
    }
@@ -268,12 +329,12 @@ $sql = "SELECT * FROM pedagogie";
 // Gestion de la page session
    if (isset($_GET["page"]) && $_GET["page"] == "session"){
     ?>
-       <form method="POST">
-       <h1>Ajout d'une session</h1>
-           <input type="text" name="nomRole">
-           <input type="submit" name="submitRole" value="enregistrer">
-       
-       </form>
+        <form method="POST">
+            <h1>Ajout d'une session</h1>
+            <input type="text" name="nomSession" placeholder="Nom de la session" required>
+            <input type="submit" name="submitSession" value="Enregistrer">
+        </form>
+
        
    <?php
    }
@@ -281,12 +342,12 @@ $sql = "SELECT * FROM pedagogie";
 // Gestion de la page apprenant
    if (isset($_GET["page"]) && $_GET["page"] == "apprenant"){
     ?>
-       <form method="POST">
-       <h1>Ajout d'un apprenant</h1>
-           <input type="text" name="nomRole">
-           <input type="submit" name="submitRole" value="enregistrer">
-       
-       </form>
+        <form method="POST">
+            <h1>Ajout d'un apprenant</h1>
+            <input type="text" name="nomApprenant" placeholder="Nom de l'apprenant" required>
+            <input type="submit" name="submitApprenant" value="Enregistrer">
+        </form>
+
        
    <?php
    }
