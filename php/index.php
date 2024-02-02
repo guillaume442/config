@@ -53,6 +53,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitApprenant'])) {
 }
 
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['modifierRole'])) {
+    $idRole = $_POST['idRole'];
+    $nomRole = $_POST['nomRoleModifie'];
+
+    $sql = "UPDATE role SET nom_role = :nomRole WHERE id_role = :idRole";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([':nomRole' => $nomRole, ':idRole' => $idRole]);
+
+    header('Location: index.php'); // Pour éviter le rechargement du formulaire
+    exit;
+}
+    
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['supprimerRole'])) {
+    $idRole = $_POST['idRole'];
+
+    $sql = "DELETE FROM role WHERE id_role = :idRole";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([':idRole' => $idRole]);
+
+    header('Location: index.php'); // Pour éviter le rechargement du formulaire
+    exit;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -77,42 +102,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitApprenant'])) {
         </nav>
     </header>
 
-    <table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nom Rôle</th>
-            <th>Modifier</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        
-        <?php
+    <?php
+// ... Votre code de connexion à la base de données et de gestion des requêtes POST ...
 
-        
-            // Ici, vous devriez récupérer les données de la base de données avec PHP
-            // J'utilise une boucle foreach statique en guise d'exemple
-            $roles = [
-                ['id' => 1, 'nom' => 'Directeur'],
-                ['id' => 2, 'nom' => 'Coordinateur'],
-                ['id' => 3, 'nom' => 'Formateur'],
-                ['id' => 4, 'nom' => 'Apprenant'],
-                ['id' => 5, 'nom' => 'Inactif'],
-                ['id' => 6, 'nom' => 'Exemple'],
-            ];
+// Votre tableau HTML
+echo '<table>';
+echo '<thead>';
+echo '<tr>';
+echo '<th>ID</th>';
+echo '<th>Nom Rôle</th>';
+echo '<th>Modifier</th>';
+echo '<th>Action</th>';
+echo '</tr>';
+echo '</thead>';
+echo '<tbody>';
 
+// Récupération des rôles depuis la base de données
+$roles = $bdd->query("SELECT * FROM role")->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($roles as $role) {
-                echo "<tr>";
-                echo "<td>{$role['id']}</td>";
-                echo "<td>{$role['nom']}</td>";
-                echo "<td><button class='btn-modify'>Modifier</button></td>";
-                echo "<td><button class='btn-delete'>Supprimer</button></td>";
-                echo "<form action='traitement_role.php' method='post'>";
-                echo "</tr>";
-            }
+foreach ($roles as $role) {
+    echo "<tr>";
+    echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
+    echo "<td>";
+    if (isset($_GET['edit']) && $_GET['edit'] == $role['id_role']) {
+        // Si l'utilisateur a cliqué sur modifier, affichez le champ de saisie
+        echo "<form method='POST'>";
+        echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
+        echo "<input type='text' name='nomRoleModifie' value='" . htmlspecialchars($role['nom_role']) . "'>";
+        echo "<input type='submit' name='modifierRole' value='Sauvegarder'>";
+        echo "</form>";
+    } else {
+        // Sinon, affichez le texte normal du rôle avec un lien pour activer la modification
+        echo htmlspecialchars($role['nom_role']);
+        echo " <a href='?edit=" . $role['id_role'] . "'>Modifier</a>";
+    }
+    echo "</td>";
+    // Ici, ajoutez une cellule pour l'action Supprimer si nécessaire
+    echo "<td><a href='?delete=" . $role['id_role'] . "'>Supprimer</a></td>";
+    echo "</tr>";
+}
+echo '</tbody>';
+echo '</table>';
+?>
+
+<?php
+        $roles = $bdd->query("SELECT * FROM role")->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($roles as $role) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
+            echo "<td>" . htmlspecialchars($role['nom_role']) . "</td>";
+            // ... Colonne Modifier ...
+            // Colonne Action avec bouton Supprimer
+            echo "<td>";
+            echo "<form method='POST'>";
+            echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
+            echo "<input type='submit' name='supprimerRole' value='Supprimer'>";
+            echo "</form>";
+            echo "</td>";
+            echo "</tr>";
+        }
         ?>
+
     </tbody>
 </table>
 

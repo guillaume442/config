@@ -60,11 +60,17 @@ th, td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
+    width: auto;
 }
 
 th {
     background-color: #f2f2f2;
 }
+
+td {
+    vertical-align: middle; /* Aligner le texte et les éléments de formulaire verticalement */
+}
+
 
 tr:nth-child(even) {
     background-color: #f9f9f9;
@@ -117,5 +123,10 @@ form input[type="submit"]:hover {
     font-weight: bold;
 }
 
-
+input[type="submit"], a {
+    padding: 5px 10px; /* Ajustez le remplissage selon vos besoins */
+    margin: 0; /* Assurez-vous qu'il n'y a pas de marge extérieure qui déforme le bouton */
+    border: 1px solid #000; /* Pour les boutons, vous pouvez avoir une bordure */
+    font-size: 1rem; /* Assurez-vous que la taille de la police n'est pas trop grande */
+}
 
