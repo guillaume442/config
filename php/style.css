@@ -64,7 +64,7 @@ th, td {
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #989494;
 }
 
 td {
@@ -128,5 +128,6 @@ input[type="submit"], a {
     margin: 0; /* Assurez-vous qu'il n'y a pas de marge extérieure qui déforme le bouton */
     border: 1px solid #000; /* Pour les boutons, vous pouvez avoir une bordure */
     font-size: 1rem; /* Assurez-vous que la taille de la police n'est pas trop grande */
+    background-color: #000000;
 }
 
