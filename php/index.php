@@ -14,68 +14,33 @@ try {
     die("Erreur de connexion : " . $e->getMessage());
 }
 
-// Traitement du formulaire de soumission d'une nouvelle formation
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitFormation'])) {
-    $nomFormation = $_POST['nomFormation'];
-    // Assurez-vous que le nom de la table correspond à celui dans votre base de données
-    $sql = "INSERT INTO formations (nom_formation) VALUES (:nomFormation)";
-    $stmt = $bdd->prepare($sql);
-    $stmt->execute([':nomFormation' => $nomFormation]);
-    
-    // Rediriger ou afficher un message de succès
-    echo "Formation ajoutée avec succès.";
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitSession'])) {
-    $nomSession = $_POST['nomSession']; // Assurez-vous que ce champ est présent dans votre formulaire
-    // Mettez à jour la requête pour inclure la nouvelle colonne
-    $sql = "INSERT INTO session (nom_session, date_debut, id_pedagogie, id_formation) VALUES (:nomSession, :dateDebut, :idPedagogie, :idFormation)";
-    $stmt = $bdd->prepare($sql);
-    // Remplacez les valeurs ci-dessous par celles que vous récupérez de votre formulaire ou d'autres sources
-    $stmt->execute([
-        ':nomSession' => $nomSession,
-        ':dateDebut' => '2023-01-01', // Exemple de date, ajustez selon vos besoins
-        ':idPedagogie' => 1, // Exemple d'ID, ajustez selon vos besoins
-        ':idFormation' => 1 // Exemple d'ID, ajustez selon vos besoins
-    ]);
-    
-    echo "Session ajoutée avec succès.";
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitApprenant'])) {
-    $nomApprenant = $_POST['nomApprenant'];
-    // Utilisez le nom correct de la table et de la colonne selon votre base de données
-    $sql = "INSERT INTO apprenants (nom_apprenant) VALUES (:nomApprenant)";
-    $stmt = $bdd->prepare($sql);
-    $stmt->execute([':nomApprenant' => $nomApprenant]);
-    
-    echo "Apprenant ajouté avec succès.";
-}
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['modifierRole'])) {
-    $idRole = $_POST['idRole'];
-    $nomRole = $_POST['nomRoleModifie'];
 
-    $sql = "UPDATE role SET nom_role = :nomRole WHERE id_role = :idRole";
-    $stmt = $bdd->prepare($sql);
-    $stmt->execute([':nomRole' => $nomRole, ':idRole' => $idRole]);
 
-    header('Location: index.php'); // Pour éviter le rechargement du formulaire
-    exit;
-}
+// if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['modifierRole'])) {
+//     $idRole = $_POST['idRole'];
+//     $nomRole = $_POST['nomRoleModifie'];
+
+//     $sql = "UPDATE role SET nom_role = :nomRole WHERE id_role = :idRole";
+//     $stmt = $bdd->prepare($sql);
+//     $stmt->execute([':nomRole' => $nomRole, ':idRole' => $idRole]);
+
+//     header('Location: index.php'); // Pour éviter le rechargement du formulaire
+//     exit;
+// }
     
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['supprimerRole'])) {
-    $idRole = $_POST['idRole'];
+// if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['supprimerRole'])) {
+//     $idRole = $_POST['idRole'];
 
-    $sql = "DELETE FROM role WHERE id_role = :idRole";
-    $stmt = $bdd->prepare($sql);
-    $stmt->execute([':idRole' => $idRole]);
+//     $sql = "DELETE FROM role WHERE id_role = :idRole";
+//     $stmt = $bdd->prepare($sql);
+//     $stmt->execute([':idRole' => $idRole]);
 
-    header('Location: index.php'); // Pour éviter le rechargement du formulaire
-    exit;
-}
+//     header('Location: index.php'); // Pour éviter le rechargement du formulaire
+//     exit;
+// }
 
 
 ?>
@@ -193,14 +158,14 @@ $pass = "admin"; // Remplacez par votre mot de passe
     // echo "Connexion réussie !";
 
     // Lire des données dans la BDD
-    $sql = "SELECT * FROM apprenants";
-    $requete = $bdd->query($sql);
-    $results = $requete->fetchAll(PDO::FETCH_ASSOC);
+    // $sql = "SELECT * FROM apprenants";
+    // $requete = $bdd->query($sql);
+    // $results = $requete->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach( $results as $value ){
-        echo "<h2>" . $value["nom_apprenant"] . "</h2>";
-        echo "<br>";
-    }
+    // foreach( $results as $value ){
+    //     echo "<h2>" . $value["nom_apprenant"] . "</h2>";
+    //     echo "<br>";
+    // }
 
 
 
@@ -280,7 +245,7 @@ if (isset($_GET["page"]) && $_GET["page"] == "role") {
         // Afficher le formulaire de modification avec les informations actuelles du rôle
         echo "<form method='POST'>";
         echo "<input type='hidden' name='idRole' value='" . $roleToEdit['id_role'] . "'>";
-        echo "<input type='text' name='nomRole' value='" . $roleToEdit['nom_role'] . "'>";
+        echo "<input type='text' name='nomRoleModifie' value='" . $roleToEdit['nom_role'] . "'>";
         echo "<input type='submit' name='modifierRole' value='Sauvegarder'>";
         echo "</form>";
     }
@@ -335,7 +300,10 @@ if (isset($_GET["page"]) && $_GET["page"] == "centre"){
 
 }
 
-// gestion de la page Formation
+
+// ----------------------------gestion de la page Formation----------------------------------------
+
+
    if (isset($_GET["page"]) && $_GET["page"] == "formation"){
     ?>
         <form method="POST">
@@ -347,7 +315,23 @@ if (isset($_GET["page"]) && $_GET["page"] == "centre"){
    <?php
    }
 
-// Gestion de la page Pedagogie
+   if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitFormation'])) {
+    $nomFormation = $_POST['nomFormation'];
+    // Assurez-vous que le nom de la table correspond à celui dans votre base de données
+    $sql = "INSERT INTO formations (nom_formation) VALUES (:nomFormation)";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([':nomFormation' => $nomFormation]);
+    
+    // Rediriger ou afficher un message de succès
+    echo "Formation ajoutée avec succès.";
+}
+
+
+
+// -------------------------------Gestion de la page Pedagogie-----------------------------------
+
+
+
    if (isset($_GET["page"]) && $_GET["page"] == "pedagogie"){
 
     $sql = "SELECT * FROM role";
@@ -412,7 +396,10 @@ $sql = "SELECT * FROM pedagogie";
 
 }
 
-// Gestion de la page session
+
+// ----------------------------------Gestion de la page session-----------------------------------------
+
+
    if (isset($_GET["page"]) && $_GET["page"] == "session"){
     ?>
         <form method="POST">
@@ -424,26 +411,109 @@ $sql = "SELECT * FROM pedagogie";
    <?php
    }
 
-// Gestion de la page apprenant
-   if (isset($_GET["page"]) && $_GET["page"] == "apprenant"){
-    ?>
-        <form method="POST">
-            <h1>Ajout d'un apprenant</h1>
-            <input type="text" name="nomApprenant" placeholder="Nom de l'apprenant" required>
-            <input type="submit" name="submitApprenant" value="Enregistrer">
-        </form>
+   if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitSession'])) {
+    $nomSession = $_POST['nomSession']; // Assurez-vous que ce champ est présent dans votre formulaire
+    // Mettez à jour la requête pour inclure la nouvelle colonne
+    $sql = "INSERT INTO session (nom_session, date_debut, id_pedagogie, id_formation) VALUES (:nomSession, :dateDebut, :idPedagogie, :idFormation)";
+    $stmt = $bdd->prepare($sql);
+    // Remplacez les valeurs ci-dessous par celles que vous récupérez de votre formulaire ou d'autres sources
+    $stmt->execute([
+        ':nomSession' => $nomSession,
+        ':dateDebut' => '2023-01-01', // Exemple de date, ajustez selon vos besoins
+        ':idPedagogie' => 1, // Exemple d'ID, ajustez selon vos besoins
+        ':idFormation' => 1 // Exemple d'ID, ajustez selon vos besoins
+    ]);
+    
+    echo "Session ajoutée avec succès.";
+}
 
+
+
+// ---------------------------------Gestion de la page apprenant---------------------------------------
+
+
+
+if (isset($_GET["page"]) && $_GET["page"] == "apprenant") {
+    // Formulaire pour ajouter un nouvel apprenant
+    ?>
+    <form method="POST">
+        <h1>Ajout d'un apprenant</h1>
+        <input type="text" name="nomApprenant" placeholder="Nom de l'apprenant" required>
+        <input type="submit" name="submitApprenant" value="Enregistrer">
+    </form>
+
+    <?php
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['supprimerApprenant'])) {
+    $idApprenant = $_POST['idApprenant'];
+    $sql = "DELETE FROM apprenants WHERE id_apprenant = :idApprenant";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([':idApprenant' => $idApprenant]);
+    header('Location: index.php?page=apprenant');
+    exit;
+}
+
+    // Traitement du formulaire d'ajout d'un nouvel apprenant
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitApprenant'])) {
+        $nomApprenant = $_POST['nomApprenant'];
+        $sql = "INSERT INTO apprenants (nom_apprenant) VALUES (:nomApprenant)";
+        $stmt = $bdd->prepare($sql);
+        $stmt->execute([':nomApprenant' => $nomApprenant]);
         
-        <?php
+        // Afficher un message de succès et recharger la page pour voir le nouvel apprenant
+        echo "<p>Apprenant ajouté avec succès.</p>";
+        header('Location: index.php?page=apprenant');
+        exit;
     }
 
+    // Affichage des apprenants existants avec les boutons Modifier et Supprimer
+echo '<table>';
+// ... [Votre code pour l'en-tête du tableau] ...
+foreach ($apprenants as $apprenant) {
+    echo "<tr>";
+    echo "<td>" . htmlspecialchars($apprenant['id_apprenant']) . "</td>";
+    echo "<td>" . htmlspecialchars($apprenant['nom_apprenant']) . "</td>";
+    echo "<td>";
+    // Bouton Modifier
+    echo "<a href='index.php?page=apprenant&editApprenant=" . $apprenant['id_apprenant'] . "'>Modifier</a>";
+    echo "</td><td>";
+    // Formulaire et bouton Supprimer
+    echo "<form method='POST'>";
+    echo "<input type='hidden' name='idApprenant' value='" . $apprenant['id_apprenant'] . "'>";
+    echo "<input type='submit' name='supprimerApprenant' value='Supprimer'>";
+    echo "</form>";
+    echo "</td>";
+    echo "</tr>";
+}
+echo '</table>';
+
+// Traitement du formulaire de modification si l'utilisateur est en mode édition
+if (isset($_GET['editApprenant'])) {
+    $idApprenant = $_GET['editApprenant'];
+    // ... [Votre code pour sélectionner et afficher le formulaire de modification] ...
+    // N'oubliez pas de traiter la sauvegarde des modifications après soumission du formulaire
+}
+
+    // Affichage des apprenants existants
+    $sql = "SELECT * FROM apprenants";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute();
+    $apprenants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo '<table>';
+    echo '<thead><tr><th>ID</th><th>Nom de l\'apprenant</th><th>Actions</th></tr></thead>';
+    echo '<tbody>';
+    foreach ($apprenants as $apprenant) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($apprenant['id_apprenant']) . "</td>";
+        echo "<td>" . htmlspecialchars($apprenant['nom_apprenant']) . "</td>";
+        // Ajouter ici les boutons Modifier et Supprimer si nécessaire
+        echo "</tr>";
+    }
+    echo '</tbody>';
+    echo '</table>';
+}
 ?>
 
-
-
-<?php 
-
-
-?>
 </body>
 </html>
