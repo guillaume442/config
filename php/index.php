@@ -102,77 +102,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['supprimerRole'])) {
         </nav>
     </header>
 
-    <?php
+<?php
 // ... Votre code de connexion à la base de données et de gestion des requêtes POST ...
 
-// Votre tableau HTML
-echo '<table>';
-echo '<thead>';
-echo '<tr>';
-echo '<th>ID</th>';
-echo '<th>Nom Rôle</th>';
-echo '<th>Modifier</th>';
-echo '<th>Action</th>';
-echo '</tr>';
-echo '</thead>';
-echo '<tbody>';
+// tableau HTML principale
+// echo '<table>';
+// echo '<thead>';
+// echo '<tr>';
+// echo '<th>ID</th>';
+// echo '<th>Nom Rôle</th>';
+// echo '<th>Modifier</th>';
+// echo '<th>Action</th>';
+// echo '</tr>';
+// echo '</thead>';
+// echo '<tbody>';
 
 // Récupération des rôles depuis la base de données
-$roles = $bdd->query("SELECT * FROM role")->fetchAll(PDO::FETCH_ASSOC);
+// $roles = $bdd->query("SELECT * FROM role")->fetchAll(PDO::FETCH_ASSOC);
 
-foreach ($roles as $role) {
-    echo "<tr>";
-    echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
-    echo "<td>";
-    if (isset($_GET['edit']) && $_GET['edit'] == $role['id_role']) {
-        // Si l'utilisateur a cliqué sur modifier, affichez le champ de saisie
-        echo "<form method='POST'>";
-        echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
-        echo "<input type='text' name='nomRoleModifie' value='" . htmlspecialchars($role['nom_role']) . "'>";
-        echo "<input type='submit' name='modifierRole' value='Sauvegarder'>";
-        echo "</form>";
-    } else {
-        // Sinon, affichez le texte normal du rôle avec un lien pour activer la modification
-        echo htmlspecialchars($role['nom_role']);
-        echo " <a href='?edit=" . $role['id_role'] . "'>Modifier</a>";
-    }
-    echo "</td>";
-    // Ici, ajoutez une cellule pour l'action Supprimer si nécessaire
-    echo "<td><a href='?delete=" . $role['id_role'] . "'>Supprimer</a></td>";
-    echo "</tr>";
-}
-echo '</tbody>';
-echo '</table>';
-?>
+// foreach ($roles as $role) {
+//     echo "<tr>";
+//     echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
+//     echo "<td>";
+//     if (isset($_GET['edit']) && $_GET['edit'] == $role['id_role']) {
+//         // Si l'utilisateur a cliqué sur modifier, affichez le champ de saisie
+//         echo "<form method='POST'>";
+//         echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
+//         echo "<input type='text' name='nomRoleModifie' value='" . htmlspecialchars($role['nom_role']) . "'>";
+//         echo "<input type='submit' name='modifierRole' value='Sauvegarder'>";
+//         echo "</form>";
+//     } else {
+//         // Sinon, affichez le texte normal du rôle avec un lien pour activer la modification
+//         echo htmlspecialchars($role['nom_role']);
+//         echo " <a href='?edit=" . $role['id_role'] . "'>Modifier</a>";
+//     }
+//     echo "</td>";
+//     // Ici, ajoutez une cellule pour l'action Supprimer si nécessaire
+//     echo "<td><a href='?delete=" . $role['id_role'] . "'>Supprimer</a></td>";
+//     echo "</tr>";
+// }
+// echo '</tbody>';
+// echo '</table>';
+// ?>
 
 <?php
-        $roles = $bdd->query("SELECT * FROM role")->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($roles as $role) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
-            echo "<td>" . htmlspecialchars($role['nom_role']) . "</td>";
-            // ... Colonne Modifier ...
-            // Colonne Action avec bouton Supprimer
-            echo "<td>";
-            echo "<form method='POST'>";
-            echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
-            echo "<input type='submit' name='supprimerRole' value='Supprimer'>";
-            echo "</form>";
-            echo "</td>";
-            echo "</tr>";
-        }
-        ?>
-
-    </tbody>
-</table>
-
+//         $roles = $bdd->query("SELECT * FROM role")->fetchAll(PDO::FETCH_ASSOC);
+//         foreach ($roles as $role) {
+//             echo "<tr>";
+//             echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
+//             echo "<td>" . htmlspecialchars($role['nom_role']) . "</td>";
+//             // ... Colonne Modifier ...
+//             // Colonne Action avec bouton Supprimer
+//             echo "<td>";
+//             echo "<form method='POST'>";
+//             echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
+//             echo "<input type='submit' name='supprimerRole' value='Supprimer'>";
+//             echo "</form>";
+//             echo "</td>";
+//             echo "</tr>";
+//         }
+        // ?>
+<!-- </tbody> -->
+<!-- </table> -->
 
 
-<!-- Formulaire pour ajouter un nouveau rôle -->
-<form method="POST">
-    <input type="text" name="nomRole" placeholder="Ajouter un rôle">
-    <input type="submit" name="submitRole" value="Ajouter">
-</form>
+
+<!-- Formulaire pour ajouter un nouveau rôle dans le tableau principale -->
+<!-- // <form method="POST">
+//     <input type="text" name="nomRole" placeholder="Ajouter un rôle">
+//     <input type="submit" name="submitRole" value="Ajouter">
+// </form> -->
 
 
 <?php
@@ -197,16 +196,6 @@ $pass = "admin"; // Remplacez par votre mot de passe
     $sql = "SELECT * FROM apprenants";
     $requete = $bdd->query($sql);
     $results = $requete->fetchAll(PDO::FETCH_ASSOC);
-    
-
-    // foreach( $results as $value ){
-    //     foreach($value as $data){
-    //         echo $data;
-    //         echo "<br>";
-
-    //     }
-    //     echo "<br>";
-    // }
 
     foreach( $results as $value ){
         echo "<h2>" . $value["nom_apprenant"] . "</h2>";
@@ -214,49 +203,97 @@ $pass = "admin"; // Remplacez par votre mot de passe
     }
 
 
-    // Insérer des données dans la BDD
-// Gestion de la page role
-if (isset($_GET["page"]) && $_GET["page"] == "role"){
- ?>
+
+
+// ---------------------------------------------Gestion de la page role---------------------------------------------
+
+
+
+
+if (isset($_GET["page"]) && $_GET["page"] == "role") {
+    // Formulaire pour ajouter un nouveau rôle
+    ?>
     <form method="POST">
-        <h1>Ajout d'un role</h1>
-        <label for="">Nom du role</label>
-        <input type="text" name="nomRole">
-        <input type="submit" name="submitRole" value="enregistrer">
-    
+        <h1>Ajout d'un rôle</h1>
+        <input type="text" name="nomRole" placeholder="Nom du rôle">
+        <input type="submit" name="submitRole" value="Enregistrer">
     </form>
 
-    
-    
-<?php
-
+    <?php
+    // Affichage des rôles existants avec les boutons Modifier et Supprimer
     $sql = "SELECT * FROM role";
     $requete = $bdd->query($sql);
     $results = $requete->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach( $results as $value ){
-        foreach($value as $data){
-            echo $data;
-            echo "<br>";
+    echo '<table>';
+    echo '<thead><tr><th>ID</th><th>Nom Rôle</th><th>Modifier</th><th>Supprimer</th></tr></thead>';
+    echo '<tbody>';
+    foreach ($results as $role) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
+        echo "<td>" . htmlspecialchars($role['nom_role']) . "</td>";
+        echo "<td><a href='?page=role&editRole=" . $role['id_role'] . "'>Modifier</a></td>";
+        echo "<td>";
+        echo "<form method='POST'>";
+        echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
+        echo "<input type='submit' name='supprimerRole' value='Supprimer'>";
+        echo "</form>";
+        echo "</td>";
+        echo "</tr>";
+    }
+    echo '</tbody>';
+    echo '</table>';
 
-        }
-        echo "<br>";
+    // Ajout d'un rôle
+    if (isset($_POST['submitRole'])) {
+        $nomRole = $_POST['nomRole'];
+        $sql = "INSERT INTO role (nom_role) VALUES (:nomRole)";
+        $stmt = $bdd->prepare($sql);
+        $stmt->execute([':nomRole' => $nomRole]);
+        echo "<p>Rôle ajouté avec succès.</p>";
+        // Redirection pour éviter le rechargement du formulaire
+        header('Location: index.php?page=role');
+        exit;
     }
 
+    // Suppression d'un rôle
+    if (isset($_POST['supprimerRole'])) {
+        $idRole = $_POST['idRole'];
+        $sql = "DELETE FROM role WHERE id_role = :idRole";
+        $stmt = $bdd->prepare($sql);
+        $stmt->execute([':idRole' => $idRole]);
+        echo "<p>Rôle supprimé avec succès.</p>";
+        // Redirection pour éviter le rechargement du formulaire
+        header('Location: index.php?page=role');
+        exit;
+    }
+
+    // Modification d'un rôle
+    if (isset($_GET['editRole'])) {
+        $idRole = $_GET['editRole'];
+        // Sélectionnez le rôle actuel à modifier
+        $sql = "SELECT * FROM role WHERE id_role = :idRole";
+        $stmt = $bdd->prepare($sql);
+        $stmt->execute([':idRole' => $idRole]);
+        $roleToEdit = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Afficher le formulaire de modification avec les informations actuelles du rôle
+        echo "<form method='POST'>";
+        echo "<input type='hidden' name='idRole' value='" . $roleToEdit['id_role'] . "'>";
+        echo "<input type='text' name='nomRole' value='" . $roleToEdit['nom_role'] . "'>";
+        echo "<input type='submit' name='modifierRole' value='Sauvegarder'>";
+        echo "</form>";
+    }
 }
 
-if (isset($_POST['submitRole'])){
-    $nomRole = $_POST['nomRole'];
-
-    $sql = "INSERT INTO `role`(`nom_role`) VALUES ('$nomRole')";
-    $bdd->query($sql);
-
-    echo "data ajoutée dans la bdd";
-
-}
 
 
-// Gestion de la page centre
+
+// ------------------------------------------Gestion de la page centre--------------------------------------------
+
+
+
+
 if (isset($_GET["page"]) && $_GET["page"] == "centre"){
     ?>
        <form method="POST">
