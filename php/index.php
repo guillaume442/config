@@ -330,15 +330,30 @@ if (isset($_GET["page"]) && $_GET["page"] == "role") {
     echo '</table>';
 
     // Ajout d'un rôle
-    if (isset($_POST['submitRole'])) {
-        $nomRole = $_POST['nomRole'];
-        $sql = "INSERT INTO role (nom_role) VALUES (:nomRole)";
-        $stmt = $bdd->prepare($sql);
-        $stmt->execute([':nomRole' => $nomRole]);
-        echo "<p>Rôle ajouté avec succès.</p>";
+    // if (isset($_POST['submitRole'])) {
+    //     $nomRole = $_POST['nomRole'];
+    //     $sql = "INSERT INTO role (nom_role) VALUES (:nomRole)";
+    //     $stmt = $bdd->prepare($sql);
+    //     $stmt->execute([':nomRole' => $nomRole]);
+    //     echo "<p>Rôle ajouté avec succès.</p>";
         // Redirection pour éviter le rechargement du formulaire
-        header('Location: index.php');
-        exit;
+    //     header('Location: index.php');
+    //     exit;
+    // }
+
+    if (isset($_POST['submit'])){
+        
+        $sql = "INSERT INTO role (nom) VALUES (:nom)";
+        
+        $requete = $bdd->prepare($sql);
+        
+        $nomRole = $_POST['nomRole'];
+
+        $requete->bindParam(':nom', $nom);
+
+        $requete->execute();
+
+        echo "données ajoutées à la bdd";
     }
 
     // Suppression d'un rôle
