@@ -16,7 +16,6 @@ try {
 
 
 
-
 //-------------------------------------------centre-------------------------------------------------
 
 
@@ -149,21 +148,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['modifierRole'])) {
     header('Location: index.php'); // Pour éviter le rechargement du formulaire
     exit;
 }
+
+
+//--------------------------------------formulaire inscription/connexion------------------------------------------
+
+    // Démarrez une session PHP
+    // session_start();
+
+    session_start();
+
+    $messages = [];
+    $dbname = 'afci';
+    $usernameDB = 'bob'; // Utilisateur de la base de données
+    $passwordDB = '123456'; // Mot de passe de la base de données
     
-
-// if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['supprimerRole'])) {
-//     $idRole = $_POST['idRole'];
-
-//     $sql = "DELETE FROM role WHERE id_role = :idRole";
-//     $stmt = $bdd->prepare($sql);
-//     $stmt->execute([':idRole' => $idRole]);
-
-//     header('Location: index.php'); // Pour éviter le rechargement du formulaire
-//     exit;
-// }
-
-
+    // Connexion à la base de données
+    // $pdo = new PDO("mysql:host=localhost;dbname=$dbname", $usernameDB, $passwordDB);
+    
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['register'])) {
+            // Ici, 'username' et 'password' sont les noms des champs dans votre formulaire HTML d'inscription
+            $username = $_POST['username'];
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    
+            try {
+                $stmt = $pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+                $stmt->bindParam(':username', $username);
+                $stmt->bindParam(':password', $password);
+                $stmt->execute();
+                $messages[] = "Utilisateur créé avec succès.";
+            } catch (PDOException $e) {
+                $messages[] = "Erreur : " . $e->getMessage();
+            }
+        } elseif (isset($_POST['login'])) {
+            // 'username' et 'password' viennent de votre formulaire HTML de connexion
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+    
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+            $stmt->bindParam(':username', $username);
+            $stmt->execute();
+            $user = $stmt->fetch();
+    
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $messages[] = "Connexion réussie.";
+            } else {
+                $messages[] = "Identifiant ou mot de passe incorrect.";
+            }
+        }
+    }
+    
+    
 ?>
+
+<!-- ---------------------------------------------------html------------------------------------------------------ -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -187,107 +226,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['modifierRole'])) {
         </nav>
     </header>
 
-<?php
-// ... Votre code de connexion à la base de données et de gestion des requêtes POST ...
+    <!-- ---------------------------------------------------------------------------------------------------- -->
 
-// tableau HTML principale
-// echo '<table>';
-// echo '<thead>';
-// echo '<tr>';
-// echo '<th>ID</th>';
-// echo '<th>Nom Rôle</th>';
-// echo '<th>Modifier</th>';
-// echo '<th>Action</th>';
-// echo '</tr>';
-// echo '</thead>';
-// echo '<tbody>';
+    <?php foreach ($messages as $message) : ?>
+        <p><?php echo $message; ?></p>
+    <?php endforeach; ?>
 
-// Récupération des rôles depuis la base de données
-// $roles = $bdd->query("SELECT * FROM role")->fetchAll(PDO::FETCH_ASSOC);
+    <h2>Inscription</h2>
+    <form method="post">
+        Username: <input type="text" name="username" required><br>
+        Password: <input type="password" name="password" required><br>
+        <input type="submit" name="register" value="Register">
+    </form>
 
-// foreach ($roles as $role) {
-//     echo "<tr>";
-//     echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
-//     echo "<td>";
-//     if (isset($_GET['edit']) && $_GET['edit'] == $role['id_role']) {
-//         // Si l'utilisateur a cliqué sur modifier, affichez le champ de saisie
-//         echo "<form method='POST'>";
-//         echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
-//         echo "<input type='text' name='nomRoleModifie' value='" . htmlspecialchars($role['nom_role']) . "'>";
-//         echo "<input type='submit' name='modifierRole' value='Sauvegarder'>";
-//         echo "</form>";
-//     } else {
-//         // Sinon, affichez le texte normal du rôle avec un lien pour activer la modification
-//         echo htmlspecialchars($role['nom_role']);
-//         echo " <a href='?edit=" . $role['id_role'] . "'>Modifier</a>";
-//     }
-//     echo "</td>";
-//     // Ici, ajoutez une cellule pour l'action Supprimer si nécessaire
-//     echo "<td><a href='?delete=" . $role['id_role'] . "'>Supprimer</a></td>";
-//     echo "</tr>";
-// }
-// echo '</tbody>';
-// echo '</table>';
-// ?>
+    <h2>Connexion</h2>
+    <form method="post">
+        Username: <input type="text" name="username" required><br>
+        Password: <input type="password" name="password" required><br>
+        <input type="submit" name="login" value="Login">
+    </form>
+
+
+<!-- ------------------------------------------------------------------------------------------------------- -->
 
 <?php
-//         $roles = $bdd->query("SELECT * FROM role")->fetchAll(PDO::FETCH_ASSOC);
-//         foreach ($roles as $role) {
-//             echo "<tr>";
-//             echo "<td>" . htmlspecialchars($role['id_role']) . "</td>";
-//             echo "<td>" . htmlspecialchars($role['nom_role']) . "</td>";
-//             // ... Colonne Modifier ...
-//             // Colonne Action avec bouton Supprimer
-//             echo "<td>";
-//             echo "<form method='POST'>";
-//             echo "<input type='hidden' name='idRole' value='" . $role['id_role'] . "'>";
-//             echo "<input type='submit' name='supprimerRole' value='Supprimer'>";
-//             echo "</form>";
-//             echo "</td>";
-//             echo "</tr>";
-//         }
-        // ?>
-<!-- </tbody> -->
-<!-- </table> -->
-
-
-
-<!-- Formulaire pour ajouter un nouveau rôle dans le tableau principale -->
-<!-- // <form method="POST">
-//     <input type="text" name="nomRole" placeholder="Ajouter un rôle">
-//     <input type="submit" name="submitRole" value="Ajouter">
-// </form> -->
-
-
-<?php
-
-$host = "mysql"; // Remplacez par l'hôte de votre base de données
-$port = "3306";
-$dbname = "afci"; // Remplacez par le nom de votre base de données
-$user = "admin"; // Remplacez par votre nom d'utilisateur
-$pass = "admin"; // Remplacez par votre mot de passe
 
 
     // Création d'une nouvelle instance de la classe PDO
-    $bdd = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8", $user, $pass);
+    // $bdd = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8", $user, $pass);
 
     // Configuration des options PDO
-    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    // $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // $bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
     // echo "Connexion réussie !";
-
-    // Lire des données dans la BDD
-    // $sql = "SELECT * FROM apprenants";
-    // $requete = $bdd->query($sql);
-    // $results = $requete->fetchAll(PDO::FETCH_ASSOC);
-
-    // foreach( $results as $value ){
-    //     echo "<h2>" . $value["nom_apprenant"] . "</h2>";
-    //     echo "<br>";
-    // }
-
-
 
 
 // ---------------------------------------------Gestion de la page role---------------------------------------------
@@ -330,16 +302,16 @@ if (isset($_GET["page"]) && $_GET["page"] == "role") {
     echo '</table>';
 
     // Ajout d'un rôle
-    // if (isset($_POST['submitRole'])) {
-    //     $nomRole = $_POST['nomRole'];
-    //     $sql = "INSERT INTO role (nom_role) VALUES (:nomRole)";
-    //     $stmt = $bdd->prepare($sql);
-    //     $stmt->execute([':nomRole' => $nomRole]);
-    //     echo "<p>Rôle ajouté avec succès.</p>";
-        // Redirection pour éviter le rechargement du formulaire
-    //     header('Location: index.php');
-    //     exit;
-    // }
+    if (isset($_POST['submitRole'])) {
+        $nomRole = $_POST['nomRole'];
+        $sql = "INSERT INTO role (nom_role) VALUES (:nomRole)";
+        $stmt = $bdd->prepare($sql);
+        $stmt->execute([':nomRole' => $nomRole]);
+        echo "<p>Rôle ajouté avec succès.</p>";
+        //Redirection pour éviter le rechargement du formulaire
+        header('Location: index.php');
+        exit;
+    }
 
     if (isset($_POST['submit'])){
         
@@ -347,7 +319,7 @@ if (isset($_GET["page"]) && $_GET["page"] == "role") {
         
         $requete = $bdd->prepare($sql);
         
-        $nomRole = $_POST['nomRole'];
+        $nomRole = specialchars($_POST['nomRole']);
 
         $requete->bindParam(':nom', $nom);
 
@@ -409,8 +381,28 @@ if (isset($_GET["page"]) && $_GET["page"] == "centre") {
     </form>
     <?php
 
+if (isset($_POST['submit'])){
+        
+    $sql = "INSERT INTO apprenants (villeCentre, adresseCentre, cpCentre) VALUES (:villeCentre, :adresseCentre, :cpCentre)";
+    
+    $requete = $bdd->prepare($sql);
+    
+    $nom = specialchars($_POST['nom']);
+    $prenom = specialchars($_POST['prenom']);
+    $mail = specialchars($_POST['mail']);
+
+    $requete->bindParam(':nom', $villeCentre);
+    $requete->bindParam(':prenom', $adresseCentre);
+    $requete->bindParam(':mail', $cpCentre);
+
+    $requete->execute();
+
+    echo "données ajoutées à la bdd";
+}
+
     // Traitement de l'ajout d'un nouveau centre
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitCentre'])) {
+        
         $villeCentre = $_POST['villeCentre'];
         $adresseCentre = $_POST['adresseCentre'];
         $cpCentre = $_POST['cpCentre'];
@@ -475,6 +467,21 @@ if (isset($_GET["page"]) && $_GET["page"] == "formation") {
         // Redirection pour éviter le rechargement du formulaire
         header('Location: index.php?page=formation');
         exit;
+    }
+
+    if (isset($_POST['submit'])){
+        
+        $sql = "INSERT INTO apprenants (nomFormation) VALUES (:nomFormation)";
+        
+        $requete = $bdd->prepare($sql);
+        
+        $nomFormation = specialchars($_POST['nomFormation']);
+
+        $requete->bindParam(':nomFormation', $nomFormation);
+
+        $requete->execute();
+
+        echo "données ajoutées à la bdd";
     }
 
     if (isset($_GET['editFormation'])) {
@@ -590,8 +597,32 @@ $sql = "SELECT * FROM pedagogie";
     $bdd->query($sql);
 
     echo "data ajoutée dans la bdd";
-
 }
+
+if (isset($_POST['submit'])){
+        
+    $sql = "INSERT INTO apprenants (nomPedagogie, prenomPedagogie, numPedagogie, mailPedagogie, idPedagogie) 
+    VALUES (:nomPedagogie, :prenomPedagogie, :numPedagogie, :mailPedagogie, :idPedagogie)";
+    
+    $requete = $bdd->prepare($sql);
+    
+    $nomPedagogie = specialchars($_POST['nomPedagogie']);
+    $prenomPedagogie = specialchars($_POST['renomPedagogie']);
+    $numPedagogie = specialchars($_POST['numPedagogie']);
+    $mailPedagogie = specialchars($_POST['mailPedagogie']);
+    $idPedagogie = specialchars($_POST['idPedagogie']);
+
+    $requete->bindParam(':nomPedagogie', $nomPedagogie);
+    $requete->bindParam(':prenomPedagogie', $prenomPedagogie);
+    $requete->bindParam(':numPedagogie', $numPedagogie);
+    $requete->bindParam(':mailPedagogie', $mailPedagogie);
+    $requete->bindParam(':idPedagogie', $idPedagogie);
+
+    $requete->execute();
+
+    echo "données ajoutées à la bdd";
+}
+
 
 
 // ----------------------------------Gestion de la page session-----------------------------------------
@@ -622,6 +653,21 @@ $sql = "SELECT * FROM pedagogie";
     ]);
     
     echo "Session ajoutée avec succès.";
+}
+
+if (isset($_POST['submit'])){
+        
+    $sql = "INSERT INTO apprenants (nomSession) VALUES (:nomSession)";
+    
+    $requete = $bdd->prepare($sql);
+    
+    $nomSession = specialchars($_POST['nomSession']);
+
+    $requete->bindParam(':nomSession', $nomSession);
+
+    $requete->execute();
+
+    echo "données ajoutées à la bdd";
 }
 
 // Affichage des sessions existantes
@@ -713,6 +759,23 @@ if (isset($_GET["page"]) && $_GET["page"] == "apprenant") {
         exit;
     }
 
+    if (isset($_POST['submit'])){
+        
+        $sql = "INSERT INTO apprenants (nomApprenant) VALUES (:nomApprenant)";
+        
+        $requete = $bdd->prepare($sql);
+        
+        $nomApprenant = specialchars($_POST['nomApprenant']);
+
+        $requete->bindParam(':nomApprenant', $nomApprenant);
+
+        $requete->execute();
+
+        echo "données ajoutées à la bdd";
+    }
+
+
+
     if (isset($_GET['editApprenant'])) {
         $idApprenant = $_GET['editApprenant'];
         
@@ -761,3 +824,7 @@ echo '</table>';
 
 </body>
 </html>
+
+
+
+<!-- table user -->

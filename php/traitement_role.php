@@ -40,3 +40,35 @@
 // // Rediriger vers index.php si l'utilisateur accède directement à ce script
 // header('Location: index.php');
 // exit();
+?>
+
+<form method="post" action="login.php">
+    Username: <input type="text" name="username" required><br>
+    Password: <input type="password" name="password" required><br>
+    <input type="submit" name="login" value="Login">
+</form>
+
+<?php
+if (isset($_POST['login'])) {
+    // Connexion à la base de données
+    $pdo = new PDO('mysql:host=localhost;dbname=votre_db', 'username', 'password');
+
+    // Récupération des données du formulaire
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Recherche de l'utilisateur dans la base de données
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    $user = $stmt->fetch();
+
+    // Vérification du mot de passe
+    if ($user && password_verify($password, $user['password'])) {
+        echo "Connexion réussie.";
+    } else {
+        echo "Identifiant ou mot de passe incorrect.";
+    }
+}
+?>
+
