@@ -12,6 +12,7 @@ try {
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
+
 }
 
 
@@ -155,12 +156,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['modifierRole'])) {
     // Démarrez une session PHP
     // session_start();
 
-    session_start();
+    // session_start();
 
-    $messages = [];
-    $dbname = 'afci';
-    $usernameDB = 'bob'; // Utilisateur de la base de données
-    $passwordDB = '123456'; // Mot de passe de la base de données
+    // $messages = [];
+    // $dbname = 'afci';
+    // $usernameDB = 'bob'; // Utilisateur de la base de données
+    // $passwordDB = '123456'; // Mot de passe de la base de données
     
     // Connexion à la base de données
     // $pdo = new PDO("mysql:host=localhost;dbname=$dbname", $usernameDB, $passwordDB);
