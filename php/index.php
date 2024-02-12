@@ -17,6 +17,40 @@ try {
 
 
 
+class Vehicule {
+    public $nombreDeRoues;
+    public $couleur;
+    public $anneeDeConstruction;
+    public $marque;
+
+    public function __construct($nombreDeRoues, $couleur, $anneeDeConstruction, $marque) {
+        $this->nombreDeRoues = $nombreDeRoues;
+        $this->couleur = $couleur;
+        $this->anneeDeConstruction = $anneeDeConstruction;
+        $this->marque = $marque;
+    }
+
+    public function concatenation() {
+        return $this->nombreDeRoues . ', ' . 
+               $this->couleur . ', ' . 
+               $this->anneeDeConstruction . ', ' . 
+               $this->marque;
+    }
+}
+
+$voiture = new Vehicule(4, 'violet', 2009, 'Renault');
+
+$moto = new Vehicule(2, 'jaune', 2023, 'Yamaha');
+
+echo 'Voiture: ' . $voiture->concatenation();
+echo "\n";
+echo 'Moto: ' . $moto->concatenation();
+
+
+
+
+
+
 //-------------------------------------------centre-------------------------------------------------
 
 
