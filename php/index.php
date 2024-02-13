@@ -16,37 +16,130 @@ try {
 }
 
 
+//-----------------------------------exo1----------------------------------------------------------------
 
-class Vehicule {
+
+class Vehicule{
+    // Attributs
     public $nombreDeRoues;
     public $couleur;
-    public $anneeDeConstruction;
+    public $annee;
     public $marque;
 
-    public function __construct($nombreDeRoues, $couleur, $anneeDeConstruction, $marque) {
+    // Constructor
+
+    public function __construct($nombreDeRoues, $couleur, $annee, $marque) {
         $this->nombreDeRoues = $nombreDeRoues;
         $this->couleur = $couleur;
-        $this->anneeDeConstruction = $anneeDeConstruction;
+        $this->annee = $annee;
         $this->marque = $marque;
     }
 
-    public function concatenation() {
-        return $this->nombreDeRoues . ', ' . 
-               $this->couleur . ', ' . 
-               $this->anneeDeConstruction . ', ' . 
-               $this->marque;
+    // Getters
+    public function getNombreDeRoues(){
+        return $this->nombreDeRoues;
+    }
+    public function getCouleur(){
+        return $this->couleur;
+    }
+    public function getAnnee(){
+        return $this->annee;
+    }
+    public function getMarque(){
+        return $this->marque;
+    }
+    // Setter
+    public function setNombreDeRoues($nombreDeRoues){
+        $this->nombreDeRoues = $nombreDeRoues;
+    }
+    public function setCouleur($couleur){
+        return $this->couleur = $couleur;
+    }
+    public function setAnnee($annee){
+        return $this->annee = $annee;
+    }
+    public function setMarque($marque){
+        return $this->marque = $marque;
+    }
+    
+    // Méthode
+
+    public function conc(){
+        return "Nombre de roues : " . $this->nombreDeRoues . ". Couleur : " . $this->getCouleur() . ". Année : " . $this->getAnnee() . ". Marque : " . $this->getMarque() . ".";
     }
 }
 
-$voiture = new Vehicule(4, 'violet', 2009, 'Renault');
 
-$moto = new Vehicule(2, 'jaune', 2023, 'Yamaha');
+$voiture = new Vehicule(4, "violet", 2009, "Renault");
+$voiture->setAnnee(2022);
+echo $voiture->getAnnee() . "<br>";
+echo $voiture->conc() . "<br>";
 
-echo 'Voiture: ' . $voiture->concatenation();
-echo "\n";
-echo 'Moto: ' . $moto->concatenation();
+// $voiture = new Vehicule(4, "violet", 2009, "Renault");
+// $voiture->setAnnee($voiture->getAnnee() + 22);
+// echo $voiture->getAnnee();
+
+// $moto = new Vehicule(2, "jaune", 2023, "Yahama");
+// $moto->setMarque("Yahama / Honda");
+// echo $moto->getMarque();
+
+$moto = new Vehicule(2, "jaune", 2023, "Yahama");
+$moto->setMarque($moto->getMarque() . "/ Honda");
+echo $moto->getMarque() . "<br>";
+echo $moto->conc() . "<br>";
+
+//----------------------------------------exo2----------------------------------------------------------
 
 
+
+class Personnage {
+    protected $taille;
+    protected $sexe;
+    protected $couleurCheveux;
+
+    public function __construct($taille, $sexe, $couleurCheveux) {
+        $this->taille = $taille;
+        $this->sexe = $sexe;
+        $this->couleurCheveux = $couleurCheveux;
+    }
+}
+
+class Mecanicien extends Personnage {
+    public function reparerVoiture() {
+        return "Mon rôle est de réparer des voitures";
+    }
+}
+
+class Developpeur extends Personnage {
+    public function description() {
+        return "Je suis développeur fullstack";
+    }
+}
+
+class Pilote extends Personnage {
+    public function __construct($taille, $sexe) {
+        parent::__construct($taille, $sexe, 'aucun'); // Tous les pilotes sont chauves
+    }
+}
+
+class DeveloppeurFrontEnd extends Developpeur {
+    public function description() {
+        return "Je suis développeur frontend";
+    }
+}
+
+// Exemples d'instanciation
+$mecanicien = new Mecanicien(175, 'masculin', 'noirs');
+echo $mecanicien->reparerVoiture();
+
+$developpeur = new Developpeur(180, 'féminin', 'blonds');
+echo $developpeur->description();
+
+$pilote = new Pilote(190, 'masculin');
+// La couleur de cheveux est 'aucun' par défaut car tous les pilotes sont chauves
+
+$devFrontEnd = new DeveloppeurFrontEnd(170, 'féminin', 'bruns');
+echo $devFrontEnd->description();
 
 
 
