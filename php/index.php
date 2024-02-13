@@ -92,54 +92,158 @@ echo $moto->conc() . "<br>";
 
 
 
+
 class Personnage {
-    protected $taille;
-    protected $sexe;
-    protected $couleurCheveux;
+    public $taille;
+    public $sexe;
+    public $couleurCheveux;
 
     public function __construct($taille, $sexe, $couleurCheveux) {
         $this->taille = $taille;
         $this->sexe = $sexe;
         $this->couleurCheveux = $couleurCheveux;
     }
+
+    public function getTaille(){
+        return $this->taille;
+    }
+    public function getSexe(){
+        return $this->sexe;
+    }
+    public function getCouleurDeCheveux(){
+        return $this->couleurCheveux;
+    }
+    
+    public function setTaille($param){
+        $this->taille = $param;
+    }
+    public function setSexe($param){
+        $this->sexe = $param;
+    }
+    public function setCouleurDeCheveux($param){
+        $this->couleurCheveux = $param;
+    }
 }
 
 class Mecanicien extends Personnage {
-    public function reparerVoiture() {
-        return "Mon rôle est de réparer des voitures";
+    public function affichage(){
+        return "Mon rôle est de réparer les voitures";
     }
 }
 
+
 class Developpeur extends Personnage {
-    public function description() {
+    public function affichage(){
         return "Je suis développeur fullstack";
     }
+
 }
+
 
 class Pilote extends Personnage {
     public function __construct($taille, $sexe) {
-        parent::__construct($taille, $sexe, 'aucun'); // Tous les pilotes sont chauves
+        $this->taille = $taille;
+        $this->sexe = $sexe;
+        $this->couleurCheveux = "Je n'ai pas de cheveux, je suis chauve";
     }
 }
 
-class DeveloppeurFrontEnd extends Developpeur {
-    public function description() {
-        return "Je suis développeur frontend";
+class Frontend extends Developpeur{
+    public function affichage(){
+        return "Je suis développeur FrontEnd";
+    }
+}
+
+class Backend extends Developpeur{
+    public function affichage(){
+        return "J'aime les bases de données";
+    }
+}
+
+$dev1 = new Developpeur(1.85, "Homme", "Blond");
+$dev2 = new Frontend(1.70, "Femme", "Blond");
+$dev3 = new Backend(1,75, "Femme", "Brun");
+
+echo $dev1->affichage() . '<br>';
+echo $dev2->affichage() . '<br>';
+echo $dev3->affichage() . '<br>';
+
+
+
+//------------------------------------exo3----------------------------------------------------------------------
+
+
+
+// Classe de base Personnage
+class Personnage {
+    protected $pointsDeVie;
+    protected $defense;
+    protected $pointsDAttaque;
+
+    public function __construct($pointsDeVie, $defense, $pointsDAttaque) {
+        $this->pointsDeVie = $pointsDeVie;
+        $this->defense = $defense;
+        $this->pointsDAttaque = $pointsDAttaque;
+    }
+
+    public function attaquer(Personnage $cible) {
+        $cible->subirDegats($this->pointsDAttaque);
+    }
+
+    public function subirDegats($degats) {
+        $degatsReduits = $degats - $this->defense;
+        if ($degatsReduits > 0) {
+            $this->pointsDeVie -= $degatsReduits;
+            if ($this->pointsDeVie <= 0) {
+                $this->mourir();
+            }
+        }
+    }
+
+    protected function mourir() {
+        echo "Le personnage a succombé à ses blessures.\n";
+    }
+
+    // Capacité spéciale
+    public function capaciteSpeciale() {
+        echo "Capacité spéciale de base activée.\n";
+    }
+}
+
+// Classe Guerrier
+class Guerrier extends Personnage {
+    public function capaciteSpeciale() {
+        echo "Le guerrier effectue un coup puissant.\n";
+        // Capacité spéciale du guerrier, par exemple : attaque double
+    }
+}
+
+// Classe Mage
+class Mage extends Personnage {
+    public function capaciteSpeciale() {
+        echo "Le mage lance un sort de feu.\n";
+        // Capacité spéciale du mage, par exemple : attaque qui ignore la défense
+    }
+}
+
+// Classe Archer
+class Archer extends Personnage {
+    public function capaciteSpeciale() {
+        echo "L'archer tire une flèche empoisonnée.\n";
+        // Capacité spéciale de l'archer, par exemple : attaque à distance avec poison
     }
 }
 
 // Exemples d'instanciation
-$mecanicien = new Mecanicien(175, 'masculin', 'noirs');
-echo $mecanicien->reparerVoiture();
+$guerrier = new Guerrier(100, 20, 15);
+$mage = new Mage(80, 10, 20);
+$archer = new Archer(90, 15, 18);
 
-$developpeur = new Developpeur(180, 'féminin', 'blonds');
-echo $developpeur->description();
-
-$pilote = new Pilote(190, 'masculin');
-// La couleur de cheveux est 'aucun' par défaut car tous les pilotes sont chauves
-
-$devFrontEnd = new DeveloppeurFrontEnd(170, 'féminin', 'bruns');
-echo $devFrontEnd->description();
+// tour de combat
+$guerrier->attaquer($mage); // Le guerrier attaque le mage
+$mage->capaciteSpeciale();  // Le mage utilise sa capacité spéciale
+$archer->attaquer($guerrier); // L'archer attaque le guerrier
+$guerrier->capaciteSpeciale(); // Le guerrier utilise sa capacité spéciale
 
 
 
